@@ -8,7 +8,6 @@ import { TransactionList } from "@/components/transaction-list";
 import { DashboardStats } from "@/components/dashboard-stats";
 import { ExpenseCharts } from "@/components/expense-charts";
 import { BudgetManager } from "@/components/budget-manager";
-import { AISuggestions } from "@/components/ai-suggestions";
 import { forceLoadFakeData } from "@/lib/fake-data";
 
 export default function HomePage() {
@@ -93,10 +92,19 @@ export default function HomePage() {
                 <span className="text-2xl">🤖</span>
               </h2>
               <p className="text-lg text-muted-foreground">
-                Suggestions intelligentes pour optimiser vos finances
+                Fonctionnalité en cours de développement
               </p>
             </div>
-            <AISuggestions refresh={refreshKey} />
+            <div className="text-center py-12 bg-white rounded-lg border-2 border-dashed border-gray-200">
+              <div className="text-6xl mb-4">🚧</div>
+              <h3 className="text-xl font-semibold mb-2">
+                Assistant IA - Bientôt Disponible
+              </h3>
+              <p className="text-muted-foreground max-w-md mx-auto">
+                L&apos;assistant IA pour les suggestions budgétaires
+                intelligentes sera disponible dans une prochaine mise à jour.
+              </p>
+            </div>
           </div>
         );
       case "history":
