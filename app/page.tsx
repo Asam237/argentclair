@@ -9,18 +9,39 @@ import { DashboardStats } from "@/components/dashboard-stats";
 import { ExpenseCharts } from "@/components/expense-charts";
 import { BudgetManager } from "@/components/budget-manager";
 import { forceLoadFakeData } from "@/lib/fake-data";
+import { storage, diagnoseStorage } from "@/lib/storage";
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [refreshKey, setRefreshKey] = useState(0);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   // Initialiser les données de démonstration au chargement
   useEffect(() => {
-    console.log("🚀 Initialisation des données...");
+    console.log("🚀 Initialisation de l'application...");
 
-    // Forcer le chargement des données de démonstration
-    forceLoadFakeData();
-    console.log("✅ Données de démonstration chargées");
+    // Diagnostic du localStorage
+    diagnoseStorage();
+
+    // Vérifier si des données existent déjà
+    const existingTransactions = storage.getTransactions();
+    const existingBudgets = storage.getBudgets();
+
+    console.log(
+      `📊 Données existantes: ${existingTransactions.length} transactions, ${existingBudgets.length} budgets`
+    );
+
+    // Si aucune donnée n'existe, charger les données de démonstration
+    if (existingTransactions.length === 0) {
+      console.log("📥 Chargement des données de démonstration...");
+      forceLoadFakeData();
+      console.log("✅ Données de démonstration chargées");
+    } else {
+      console.log("📋 Utilisation des données existantes");
+    }
+
+    // Marquer comme initialisé
+    setIsInitialized(true);
 
     // Déclencher un refresh pour mettre à jour tous les composants
     setRefreshKey((prev) => prev + 1);
@@ -29,13 +50,21 @@ export default function HomePage() {
   }, []);
 
   const handleTransactionAdded = () => {
-    console.log("➕ Nouvelle transaction ajoutée, refresh...");
+    console.log("➕ Nouvelle transaction ajoutée, refresh des composants...");
     setRefreshKey((prev) => prev + 1);
+
+    // Diagnostic après ajout
+    const info = storage.getStorageInfo();
+    console.log("📊 État après ajout:", info);
   };
 
   const handleDataCleared = () => {
-    console.log("🗑️ Données supprimées, refresh...");
+    console.log("🗑️ Données supprimées, refresh des composants...");
     setRefreshKey((prev) => prev + 1);
+
+    // Diagnostic après suppression
+    const info = storage.getStorageInfo();
+    console.log("📊 État après suppression:", info);
   };
 
   const renderContent = () => {
@@ -129,6 +158,23 @@ export default function HomePage() {
         );
     }
   };
+
+  // Afficher un loader pendant l'initialisation
+  if (!isInitialized) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-muted-foreground">
+            Initialisation de l&apos;application...
+          </p>
+          <p className="text-sm text-muted-foreground mt-2">
+            Chargement des données depuis le localStorage
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-50 to-slate-100">
