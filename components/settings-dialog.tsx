@@ -190,25 +190,6 @@ export function SettingsDialog({ onDataCleared }: SettingsDialogProps) {
               )}
             </CardContent>
           </Card>
-
-          {/* Alertes */}
-          <Alert className="border-blue-200 bg-blue-50">
-            <Download className="h-4 w-4 text-blue-600" />
-            <AlertDescription className="text-blue-800">
-              <strong>Données de démonstration :</strong> Chargez des exemples
-              de transactions et budgets pour tester l&apos;application.
-            </AlertDescription>
-          </Alert>
-
-          <Alert className="border-orange-200 bg-orange-50">
-            <AlertTriangle className="h-4 w-4 text-orange-600" />
-            <AlertDescription className="text-orange-800">
-              <strong>Attention :</strong> La suppression des données est
-              définitive et irréversible. Vos données sont stockées uniquement
-              sur cet appareil.
-            </AlertDescription>
-          </Alert>
-
           <div className="space-y-3">
             <h4 className="font-medium">Actions disponibles :</h4>
             <ul className="text-sm text-muted-foreground space-y-1">
