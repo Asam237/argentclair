@@ -1,7 +1,7 @@
 # 💰 ArgentClair - Gestion Financière Intelligente
 
 <div align="center">
-  <img src="/assets/pictures/capture.png" alt="ArgentClair Banner" width="100%" height="300" style="object-fit: cover; border-radius: 10px;">
+  <img src="/assets/pictures/capture.png" alt="ArgentClair Banner" width="100%" height="400" style="object-fit: cover; border-radius: 10px;">
   
   [![Next.js](https://img.shields.io/badge/Next.js-13.5-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
   [![TypeScript](https://img.shields.io/badge/TypeScript-5.2-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
