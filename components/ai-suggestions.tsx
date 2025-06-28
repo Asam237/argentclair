@@ -266,7 +266,6 @@ export function AISuggestions({ refresh }: AISuggestionsProps) {
                           <h4 className="font-medium">{suggestion.title}</h4>
                           <Badge
                             variant={getPriorityColor(suggestion.priority)}
-                            size="sm"
                           >
                             {suggestion.priority === "high"
                               ? "Urgent"
@@ -274,7 +273,7 @@ export function AISuggestions({ refresh }: AISuggestionsProps) {
                               ? "Important"
                               : "Optionnel"}
                           </Badge>
-                          <Badge variant="outline" size="sm">
+                          <Badge variant="outline">
                             {suggestion.confidence}% confiance
                           </Badge>
                         </div>
@@ -309,7 +308,7 @@ export function AISuggestions({ refresh }: AISuggestionsProps) {
                             Appliquer
                           </Button>
                         ) : (
-                          <Badge variant="outline" size="sm">
+                          <Badge variant="outline">
                             <Info className="h-3 w-3 mr-1" />
                             Info
                           </Badge>
@@ -342,7 +341,7 @@ export function AISuggestions({ refresh }: AISuggestionsProps) {
                     </div>
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span>Taux d'épargne</span>
+                        <span>Taux d&apos;épargne</span>
                         <span
                           className={
                             insights.savingsRate >= 20
@@ -467,7 +466,7 @@ export function AISuggestions({ refresh }: AISuggestionsProps) {
 
                     <div className="flex justify-between text-sm">
                       <span>Tendance</span>
-                      <Badge variant="outline" size="sm">
+                      <Badge variant="outline">
                         {pattern.trend === "increasing"
                           ? "En hausse"
                           : pattern.trend === "decreasing"
@@ -500,7 +499,6 @@ export function AISuggestions({ refresh }: AISuggestionsProps) {
                     {pattern.seasonality && (
                       <Badge
                         variant="outline"
-                        size="sm"
                         className="w-full justify-center"
                       >
                         Pattern saisonnier détecté
