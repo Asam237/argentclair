@@ -45,7 +45,14 @@ export function Footer() {
             <div className="text-xs text-muted-foreground text-center md:text-right">
               <p>© {currentYear} ArgentClair</p>
               <p className="flex items-center justify-center md:justify-end gap-1 mt-1">
-                Fait avec <Heart className="h-3 w-3 text-red-500" /> en France
+                Fait avec <Heart className="h-3 w-3 text-red-500" /> par{" "}
+                <a
+                  className="font-medium underline underline-offset-2"
+                  href="https://abbasali.cm"
+                  target="_blanck"
+                >
+                  Asam
+                </a>
               </p>
             </div>
           </div>
