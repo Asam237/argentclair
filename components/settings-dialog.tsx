@@ -12,18 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { forceLoadFakeData } from "@/lib/fake-data";
-import { storage, diagnoseStorage } from "@/lib/storage";
-import {
-  Trash2,
-  AlertTriangle,
-  RefreshCw,
-  Database,
-  Download,
-  Info,
-  HardDrive,
-} from "lucide-react";
+import { Trash2, AlertTriangle, RefreshCw, Database } from "lucide-react";
 
 interface SettingsDialogProps {
   onDataCleared: () => void;
@@ -32,95 +21,31 @@ interface SettingsDialogProps {
 export function SettingsDialog({ onDataCleared }: SettingsDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isClearing, setIsClearing] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [storageInfo, setStorageInfo] = useState(storage.getStorageInfo());
-
-  const updateStorageInfo = () => {
-    setStorageInfo(storage.getStorageInfo());
-  };
 
   const handleClearData = async () => {
     setIsClearing(true);
 
     try {
-      console.log("🗑️ Début de la suppression des données...");
-
-      // Supprimer toutes les données
-      const success = storage.clearAllData();
-
-      if (success) {
-        console.log("✅ Données supprimées avec succès");
-
-        // Attendre un peu pour l'effet visuel
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-
-        // Mettre à jour les informations de stockage
-        updateStorageInfo();
-
-        // Notifier le parent que les données ont été supprimées
-        onDataCleared();
-
-        // Fermer le dialog
-        setIsOpen(false);
-
-        // Recharger la page pour réinitialiser l'état
-        window.location.reload();
-      } else {
-        console.error("❌ Échec de la suppression des données");
-      }
-    } catch (error) {
-      console.error("❌ Erreur lors de la suppression des données:", error);
-    } finally {
-      setIsClearing(false);
-    }
-  };
-
-  const handleLoadDemoData = async () => {
-    setIsLoading(true);
-
-    try {
-      console.log("📥 Début du chargement des données de démonstration...");
-
-      // Charger les données de démonstration
-      forceLoadFakeData();
-
-      console.log("✅ Données de démonstration chargées");
+      // Vider le localStorage
+      localStorage.removeItem("personal-expenses-transactions");
+      localStorage.removeItem("personal-expenses-budgets");
 
       // Attendre un peu pour l'effet visuel
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // Mettre à jour les informations de stockage
-      updateStorageInfo();
-
-      // Notifier le parent que les données ont été rechargées
+      // Notifier le parent que les données ont été supprimées
       onDataCleared();
 
       // Fermer le dialog
       setIsOpen(false);
 
-      // Recharger la page pour afficher les nouvelles données
+      // Recharger la page pour réinitialiser l'état
       window.location.reload();
     } catch (error) {
-      console.error(
-        "❌ Erreur lors du chargement des données de démonstration:",
-        error
-      );
+      console.error("Erreur lors de la suppression des données:", error);
     } finally {
-      setIsLoading(false);
+      setIsClearing(false);
     }
-  };
-
-  const handleDiagnose = () => {
-    diagnoseStorage();
-    updateStorageInfo();
-  };
-
-  const formatBytes = (bytes: number): string => {
-    if (bytes === 0) return "0 B";
-    const k = 1024;
-    const sizes = ["B", "KB", "MB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
   return (
@@ -131,7 +56,7 @@ export function SettingsDialog({ onDataCleared }: SettingsDialogProps) {
           Paramètres
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Database className="h-5 w-5" />
@@ -143,61 +68,21 @@ export function SettingsDialog({ onDataCleared }: SettingsDialogProps) {
         </DialogHeader>
 
         <div className="space-y-4">
-          {/* Informations de stockage */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm flex items-center gap-2">
-                <HardDrive className="h-4 w-4" />
-                État du Stockage Local
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              {storageInfo.available ? (
-                <>
-                  <div className="flex justify-between text-sm">
-                    <span>Transactions:</span>
-                    <span className="font-medium">
-                      {storageInfo.transactions}
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Budgets:</span>
-                    <span className="font-medium">{storageInfo.budgets}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Taille totale:</span>
-                    <span className="font-medium">
-                      {formatBytes(storageInfo.totalSize)}
-                    </span>
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleDiagnose}
-                    className="w-full mt-2"
-                  >
-                    <Info className="h-4 w-4 mr-2" />
-                    Diagnostic Complet
-                  </Button>
-                </>
-              ) : (
-                <Alert className="border-red-200 bg-red-50">
-                  <AlertTriangle className="h-4 w-4 text-red-600" />
-                  <AlertDescription className="text-red-800">
-                    LocalStorage non disponible dans ce navigateur.
-                  </AlertDescription>
-                </Alert>
-              )}
-            </CardContent>
-          </Card>
+          <Alert className="border-orange-200 bg-orange-50">
+            <AlertTriangle className="h-4 w-4 text-orange-600" />
+            <AlertDescription className="text-orange-800">
+              <strong>Attention :</strong> Cette action supprimera
+              définitivement toutes vos transactions et budgets. Cette action
+              est irréversible.
+            </AlertDescription>
+          </Alert>
+
           <div className="space-y-3">
             <h4 className="font-medium">Actions disponibles :</h4>
             <ul className="text-sm text-muted-foreground space-y-1">
-              <li>• Charger des données de démonstration (50 transactions)</li>
-              <li>• Supprimer toutes les transactions</li>
-              <li>• Supprimer tous les budgets</li>
-              <li>• Réinitialiser complètement l&apos;application</li>
-              <li>• Diagnostic du système de stockage</li>
+              <li>• Suppression de toutes les transactions</li>
+              <li>• Suppression de tous les budgets</li>
+              <li>• Réinitialisation complète de l&apos;application</li>
             </ul>
           </div>
         </div>
@@ -206,34 +91,14 @@ export function SettingsDialog({ onDataCleared }: SettingsDialogProps) {
           <Button
             variant="outline"
             onClick={() => setIsOpen(false)}
-            disabled={isClearing || isLoading}
+            disabled={isClearing}
           >
             Annuler
           </Button>
-
-          <Button
-            variant="default"
-            onClick={handleLoadDemoData}
-            disabled={isClearing || isLoading}
-            className="flex items-center gap-2"
-          >
-            {isLoading ? (
-              <>
-                <RefreshCw className="h-4 w-4 animate-spin" />
-                Chargement...
-              </>
-            ) : (
-              <>
-                <Download className="h-4 w-4" />
-                Charger les données de démo
-              </>
-            )}
-          </Button>
-
           <Button
             variant="destructive"
             onClick={handleClearData}
-            disabled={isClearing || isLoading}
+            disabled={isClearing}
             className="flex items-center gap-2"
           >
             {isClearing ? (
